@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd" [
+<!ENTITY contextInclude SYSTEM "org/springframework/web/portlet/context/WEB-INF/contextInclude.xml">
+]>
+
+<beans default-init-method="myInit" default-destroy-method="myDestroy">
+   <bean id="parenttriangle" class="beans.Triangle"  abstract="true">
+      <property name="points">
+         <list>
+             <ref bean="pointA"/>
+         </list>
+      </property>
+   </bean>
+ 
+   <bean id="triangle" class="beans.Triangle" parent="parenttriangle">
+      <property name="points">
+         <list merge="true">
+             <ref bean="pointB"/>
+             <ref bean="pointC"/>
+         </list>
+      </property>
+   </bean>
+   
+   <bean id="pointA" class="beans.Point">
+      <property name="x" value="${pointA.pointX}"/>
+      <property name="y" value="${pointA.pointY}"></property>
+   </bean>
+   
+   <bean id="pointB" class="beans.Point">
+      <property name="x" value="-20"/>
+      <property name="y" value="0"/>
+   </bean>
+   
+   <bean id="pointC" class="beans.Point">
+      <property name="x" value="20"/>
+      <property name="y" value="0"/>
+   </bean>
+   
+   <bean class="beans.postprocessor.DisplayNameBeanPostProcessor"/>
+   <bean class="beans.postprocessor.MyBeanFactoryPostProcessor"/>
+   <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+      <property name="locations" value="pointsconfig.properties"/>
+   </bean>
+</beans>
